@@ -1,0 +1,99 @@
+version: '3.9'
+
+services:
+    mariadb:
+        container_name: "dev-platform-mariadb"
+        restart: "unless-stopped"
+        build:
+            context: ./_docker/config/mariadb
+            dockerfile: Dockerfile
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        ports:
+            - "3306:3306"
+        env_file:
+            - .env
+        networks:
+            internal_network:
+                ipv4_address: 10.56.1.10
+
+    redis:
+        container_name: "dev-platform-dev-redis"
+        image: redis:7.0.8
+        restart: "unless-stopped"
+        networks:
+            internal_network:
+                ipv4_address: 10.56.1.20
+
+    rabbitmq:
+        container_name: "dev-platform-rabbitmq"
+        restart: "unless-stopped"
+        build:
+            context: ./_docker/config/rabbitmq
+            dockerfile: Dockerfile
+        ports:
+            - "15672:15672"
+        networks:
+            internal_network:
+                ipv4_address: 10.56.1.30
+        env_file:
+            - .env
+        mem_limit: 1g
+
+    elasticsearch:
+        container_name: "dev-platform-elasticsearch"
+        restart: "unless-stopped"
+        build:
+            context: ./_docker/config/elasticsearch
+            dockerfile: Dockerfile
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        environment:
+#            - http.host=0.0.0.0
+#            - network.host=0.0.0.0
+            - discovery.type=single-node
+#            - node.name=es01
+            - cluster.name=docker-cluster-dev
+            - bootstrap.memory_lock=true
+            - xpack.security.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            # - discovery.seed_hosts=es02
+            # - cluster.initial_master_nodes=es01 #,es02
+            # - "discovery.zen.ping.unicast.hosts=elasticsearch"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+            nofile:
+                soft: 65536
+                hard: 65536
+        mem_limit: 1g
+        cap_add:
+            - IPC_LOCK
+#        volumes:
+#            - esdata2:/usr/share/elasticsearch/data
+#            - ./_docker/logs/elasticsearch:/usr/share/elasticsearch/logs/
+        networks:
+            internal_network:
+                ipv4_address: 10.56.1.40
+
+    proxy:
+        container_name: "dev-platform-proxy"
+        restart: "unless-stopped"
+        build:
+            context: ./_docker/config/proxy
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            internal_network:
+                ipv4_address: 10.56.1.50
+
+networks:
+    internal_network:
+        ipam:
+            driver: default
+            config:
+                - subnet: "10.56.1.0/24"
