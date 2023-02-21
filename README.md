@@ -40,7 +40,7 @@ So in another repo I delivered an addition, for proper work, you need to use an 
 
 The main schema how dev platform works is presented on the pic below:
 
-![img.png](img.png)
+![img_1.png](img.png)
 
 
 
