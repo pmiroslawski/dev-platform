@@ -64,16 +64,32 @@ In current version `Dev Platform` delivery services like:
 - Download the version of this repository.
 - run command `docker-compose up -d`
 
+... wait a few sec then try to open in your browser below url:
 
-then you are ready to configure your first app to work with `Dev Platform`
+```html
+http://localhost/status/
+```
 
+If you waited a few sec and all services started successfully you should see such pic:  
+![img_1.png](img_1.png)
+
+
+If you see it than you are ready to configure your first app in `Dev Platform`
+
+## Network 
+
+`Dev Platform` creates a separate network on your machine where all executed services are attached to. In other words all services can communicate with each other. You can see on the picture above, status website display all required information about running services and their proper IP addresses.
+
+Additionally, ports marked as `[:...]` has been mapped into your local machine so you can easy get access to RabbitMQ admin panel or even ElasticSearch.
 
 
 
 ## Customization
 
 
-Dockerized uses Docker Compose to run commands, which are defined in a Compose File. The default commands are listed in docker-compose.yml. You can add your own commands or customize the defaults, by loading a custom Compose File.
+Dockerized uses Docker Compose to run commands, which are defined in a Compose File. The default services are listed in docker-compose.yml. You can also add your own services or customize the defaults, by loading a custom Compose File.
+
+Additionally, part of configurable variables are stored in .env file so feel free to update them.
 
 
 ### How to add a new application to the platform
