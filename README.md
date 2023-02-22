@@ -99,10 +99,23 @@ Additionally, part of the configurable variables are stored in the .env file so 
 
 
 ### How to add a new application to the platform
-...
 
+Please take a look on [demo app](https://github.com/pmiroslawski/dev-platform-demo-app-php) which contains a basic configuration to run a PHP application.
 
+You need to configure your existing app to use the given `docker-compose.yaml` file or just clone `demo app` and start to develop your app in the main directory.
+
+When you do your setup and basic configuration according to [Installation](https://github.com/pmiroslawski/dev-platform-demo-app-php/#installation) section, you need to also add a virtual host in `Dev Platform`.
+
+Check the [`_docker/config/proxy/vhost/demo.conf`](https://github.com/pmiroslawski/dev-platform/blob/develop/_docker/config/proxy/vhost/demo.conf) to see the working example for demo app and create the new one for your app. The only thing you need to remember is to set a proper ip address in `proxy_pass` which points to your new app. The last thing is to rebuild docker env:
+```bash
+docker-compose down
+docker-compose build
+docker-compose up -d
+```
 
 
 ### How to add a new virtualhost in the platform
-...
+
+Create a new file based on the working example of  [demo app](https://github.com/pmiroslawski/dev-platform/blob/develop/_docker/config/proxy/vhost/demo.conf). The new virtual host definition must be in the same directory.
+
+Adding/removing a virtual host into a proxy container requires rebuilding it.
