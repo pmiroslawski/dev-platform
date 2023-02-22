@@ -8,10 +8,16 @@
     <body>
     <h2>Platform DEV connection check</h2>
     <hr/>
+        <div>
+            <ul>
+                <li><b><a href="phpinfo.php">phpinfo</a></b></li>
+            </ul>
+        </div>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Service</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Status</th>
                     <th scope="col">Details</th>
                 </tr>
@@ -19,12 +25,13 @@
             <tbody>
                 <tr>
                     <td>MariaDB</td>
+                    <td>10.56.1.10</td>
                     <td>
                         <?php
                             $result = $error = null;
                             try {
                                 $pdo = new PDO(
-                                    'mysql:host=10.56.1.10;dbname=demo_app', 'demo_app_user', 'demo_app_pass',
+                                    'mysql:host=10.56.1.10;dbname=information_schema', 'root', 'change-me',
                                 );
                                 $result = true;
                             } catch (Exception $e) {
@@ -45,6 +52,7 @@
 
                 <tr>
                     <td>Redis</td>
+                    <td>10.56.1.20</td>
                     <td>
                         <?php
                             $result = $error = null;
@@ -71,6 +79,7 @@
 
                 <tr>
                     <td>RabbitMQ</td>
+                    <td>10.56.1.30</td>
                     <td>
                         <?php
                             $result = $error = null;
@@ -101,6 +110,7 @@
 
                 <tr>
                     <td>Elasticsearch</td>
+                    <td>10.56.1.40</td>
                     <td>
                         <?php
                             $result = $error = null;

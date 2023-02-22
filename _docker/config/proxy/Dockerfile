@@ -26,7 +26,8 @@ ADD vhost/ /etc/nginx/sites-available/
 ADD vhost/ /etc/nginx/sites-enabled/
 
 #RUN ln -s /etc/nginx/sites-available/demo.conf /etc/nginx/sites-enabled/demo.conf
-#RUN echo "upstream php-upstream { server php:9000; }" > /etc/nginx/conf.d/upstream.conf
+
+RUN echo "upstream php-upstream { server php:9000; }" > /etc/nginx/conf.d/upstream.conf
 
 RUN usermod -u 1000 nginx
 RUN groupmod -g 1000 nginx

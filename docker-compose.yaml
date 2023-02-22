@@ -14,7 +14,7 @@ services:
         env_file:
             - .env
         networks:
-            internal_network:
+            internal-network:
                 ipv4_address: 10.56.1.10
 
     redis:
@@ -22,7 +22,7 @@ services:
         image: redis:7.0.8
         restart: "unless-stopped"
         networks:
-            internal_network:
+            internal-network:
                 ipv4_address: 10.56.1.20
 
     rabbitmq:
@@ -34,7 +34,7 @@ services:
         ports:
             - "15672:15672"
         networks:
-            internal_network:
+            internal-network:
                 ipv4_address: 10.56.1.30
         env_file:
             - .env
@@ -75,7 +75,7 @@ services:
 #            - esdata2:/usr/share/elasticsearch/data
 #            - ./_docker/logs/elasticsearch:/usr/share/elasticsearch/logs/
         networks:
-            internal_network:
+            internal-network:
                 ipv4_address: 10.56.1.40
 
     proxy:
@@ -84,15 +84,31 @@ services:
         build:
             context: ./_docker/config/proxy
             dockerfile: Dockerfile
+        links:
+            - php
+        volumes_from:
+            - php
         ports:
             - "80:80"
             - "443:443"
         networks:
-            internal_network:
+            internal-network:
                 ipv4_address: 10.56.1.50
 
+    php:
+        container_name: 'dev-platform-php-fpm'
+        restart: "unless-stopped"
+        build:
+            context: ./_docker/config/php-fpm
+            dockerfile: Dockerfile
+        volumes:
+            - ./_docker/config/php-fpm/www/:/var/www/status
+        networks:
+            internal-network:
+                ipv4_address: 10.56.1.51
+
 networks:
-    internal_network:
+    internal-network:
         ipam:
             driver: default
             config:
