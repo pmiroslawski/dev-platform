@@ -15,7 +15,7 @@ services:
             - .env
         networks:
             internal-network:
-                ipv4_address: 10.56.1.10
+                ipv4_address: ${ADDR_IP_MARIADB}
 
     redis:
         container_name: "dev-platform-dev-redis"
@@ -23,7 +23,7 @@ services:
         restart: "unless-stopped"
         networks:
             internal-network:
-                ipv4_address: 10.56.1.20
+                ipv4_address: ${ADDR_IP_REDIS}
 
     rabbitmq:
         container_name: "dev-platform-rabbitmq"
@@ -35,7 +35,7 @@ services:
             - "15672:15672"
         networks:
             internal-network:
-                ipv4_address: 10.56.1.30
+                ipv4_address: ${ADDR_IP_RABBITMQ}
         env_file:
             - .env
         mem_limit: 1g
@@ -76,7 +76,7 @@ services:
 #            - ./_docker/logs/elasticsearch:/usr/share/elasticsearch/logs/
         networks:
             internal-network:
-                ipv4_address: 10.56.1.40
+                ipv4_address: ${ADDR_IP_ELASTICSEARCH}
 
     proxy:
         container_name: "dev-platform-proxy"
@@ -93,7 +93,7 @@ services:
             - "443:443"
         networks:
             internal-network:
-                ipv4_address: 10.56.1.50
+                ipv4_address: ${ADDR_IP_PROXY}
 
     php:
         container_name: 'dev-platform-php-fpm'
@@ -105,7 +105,9 @@ services:
             - ./_docker/config/php-fpm/www/:/var/www/status
         networks:
             internal-network:
-                ipv4_address: 10.56.1.51
+                ipv4_address: ${ADDR_IP_PHPFPM}
+        env_file:
+            - .env
 
 networks:
     internal-network:

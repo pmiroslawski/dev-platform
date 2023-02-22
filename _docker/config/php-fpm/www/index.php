@@ -1,7 +1,7 @@
 <?php error_reporting(E_ALL); ?>
 <html>
     <head>
-        <title>Platform DEV connection check</title>
+        <title>Platform DEV - services connections status</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
@@ -25,13 +25,13 @@
             <tbody>
                 <tr>
                     <td>MariaDB</td>
-                    <td>10.56.1.10</td>
+                    <td><?= getenv('ADDR_IP_MARIADB') ?></td>
                     <td>
                         <?php
                             $result = $error = null;
                             try {
                                 $pdo = new PDO(
-                                    'mysql:host=10.56.1.10;dbname=information_schema', 'root', 'change-me',
+                                    'mysql:host='.getenv('ADDR_IP_MARIADB').';dbname=information_schema', 'root', getenv('MYSQL_ROOT_PASSWORD'),
                                 );
                                 $result = true;
                             } catch (Exception $e) {
@@ -52,13 +52,13 @@
 
                 <tr>
                     <td>Redis</td>
-                    <td>10.56.1.20</td>
+                    <td><?= getenv('ADDR_IP_REDIS') ?></td>
                     <td>
                         <?php
                             $result = $error = null;
                             try {
                                 $redis = new Redis();
-                                $redis->connect('10.56.1.20');
+                                $redis->connect(getenv('ADDR_IP_REDIS'));
                                 $result = true;
                             } catch (Exception $e) {
                                 $result = false;
@@ -79,15 +79,15 @@
 
                 <tr>
                     <td>RabbitMQ</td>
-                    <td>10.56.1.30</td>
+                    <td><?= getenv('ADDR_IP_RABBITMQ') ?></td>
                     <td>
                         <?php
                             $result = $error = null;
                             try {
                                 $connection = new AMQPConnection();
-                                $connection->setHost('10.56.1.30');
-                                $connection->setLogin('admin');
-                                $connection->setPassword('pass');
+                                $connection->setHost(getenv('ADDR_IP_RABBITMQ'));
+                                $connection->setLogin(getenv('RABBITMQ_ADMIN'));
+                                $connection->setPassword(getenv('RABBITMQ_ADMIN_PASS'));
                                 $connection->setVhost('/');
                                 if ($connection->connect()) {
                                     $result = true;
@@ -110,12 +110,12 @@
 
                 <tr>
                     <td>Elasticsearch</td>
-                    <td>10.56.1.40</td>
+                    <td><?= getenv('ADDR_IP_ELASTICSEARCH') ?></td>
                     <td>
                         <?php
                             $result = $error = null;
                             try {
-                                $data = print_r(file_get_contents('http://10.56.1.40:9200/_cluster/health?pretty'), true);
+                                $data = print_r(file_get_contents('http://'.getenv('ADDR_IP_ELASTICSEARCH').':9200/_cluster/health?pretty'), true);
                                 $result = true;
                             } catch (Exception $e) {
                                 $result = false;
