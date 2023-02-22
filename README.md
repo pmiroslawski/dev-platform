@@ -40,7 +40,7 @@ So in another repo I delivered an addition, for proper work, you need to use an 
 
 The main schema how dev platform works is presented on the pic below:
 
-![img_1.png](img.png)
+![img_1.png](assets/img.png)
 
 
 
@@ -71,7 +71,7 @@ http://localhost/status/
 ```
 
 If you waited a few sec and all services started successfully you should see such pic:  
-![img_1.png](img_1.png)
+![img_1.png](assets/img_1.png)
 
 
 If you see it than you are ready to configure your first app in `Dev Platform`
